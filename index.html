@@ -1,0 +1,531 @@
+<?php
+  require './phpcode/database_con.php';
+  require './phpcode/filtering.php';
+  require './phpcode/deleting.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+   <!-- ======================================   HEAD    ====================================== -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./content/hospital.svg" type="image/x-icon">
+    
+    <!-- ======================================   style links    ====================================== -->
+    <!-- BootStrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <!-- flowbite -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <!-- SELF -->
+    <link rel="stylesheet" href="./styles/browsestyle.css" />
+    <link rel="stylesheet" href="./styles/msgbox.css" />
+
+
+    <!-- ======================================   Script links    ====================================== -->
+    <!-- flowbite and tailwind -->
+    <script src="https://cdn.tailwindcss.com" async></script>
+    <script src="https://use.fontawesome.com/03f8a0ebd4.js" async></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" async></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" async></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js" async></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" async></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+      async
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+      async
+    ></script>
+    <!-- BootStrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+      async></script>
+    <script
+      src="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      async></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+      async></script>
+
+
+    <!-- Google Map API -->
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+      async
+    ></script>
+
+    <!-- SELF -->
+    <script src="./scripts/code.js" async></script>
+
+    <style>
+      /* *************************************    filter & h2 container    ************************************* */
+      .contentHospital {
+        position: relative;
+      }
+
+      .topp {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 5;
+        /* background: rgba(25, 61, 66, 0.658); */
+        border-radius: 0px 0px 10px 10px;
+        backdrop-filter: blur(10px);
+      }
+
+      .topp form {
+        /* background:red; */
+        width:20%;
+        display: flex;
+        justify-content: center;
+        /* color: aquamarine;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2px; */
+      }
+
+      .topp form button {
+        width:fit-content;
+        color: #ddd;
+        border: none;
+        border-radius: 10px;
+        padding: 5px;
+        margin: 2%;
+        /* margin-right:4%; */
+        border:2px groove #aaa;
+        background:rgba(32, 32, 32, 0.151);
+      }
+
+      .topp form button:hover,
+      .topp form button:active {
+        border:2px groove transparent;
+        background:rgba(32, 32, 32, 0.37);
+        color:rgb(4, 253, 253);
+      }
+      
+
+      /* *************************************    alert box    ************************************* */
+      .msgs {
+        z-index: 20;
+      }
+
+      .noticeAlert {
+        border: none;
+        box-shadow: -20px 20px 20px 5px rgba(0, 0, 0, 0.65);
+        z-index: 19;
+        animation: notified 1.5s 0s 1 alternate both;
+        animation-timing-function: cubic-bezier(0.01, -0.05, 0.005, 1.5);
+        transform: perspective(200px) rotateX(45deg);
+        width: 90%;
+        padding: 2%;
+        margin: auto;
+        background: linear-gradient(
+          45deg,
+          rgba(7, 66, 66, 0.6),
+          rgba(29, 33, 34, 0.6),
+          rgba(29, 33, 34, 0.6),
+          rgba(7, 66, 66, 0.6)
+        );
+        color: greenyellow;
+        display: flex;
+        justify-content: space-around;
+        border-radius: 10px;
+        align-items: center;
+        text-align: center;
+        letter-spacing: 2px;
+        word-spacing: 4px;
+      }
+
+      .noticeAlert button {
+        animation: notified 1.5s 0s 1 alternate both;
+        animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1);
+        margin-left: 3%;
+        border: none;
+        border-radius: 5px;
+        color: crimson;
+        font-size: 2em;
+        padding: 2%;
+        width: 100%;
+      }
+
+      @keyframes notified {
+        from {
+          background: rgba(0, 0, 0, 0.8);
+          margin-top: -2%;
+          transform: perspective(2px) rotateX(45deg);
+        }
+        to {
+          background: linear-gradient(
+            45deg,
+            rgba(7, 66, 66, 0.6),
+            rgba(29, 33, 34, 0.6),
+            rgba(29, 33, 34, 0.6),
+            rgba(7, 66, 66, 0.6)
+          );
+          margin-top: 1vh;
+          transform: perspective(200px) rotateX(3deg);
+        }
+      }
+
+      #noticeblock {
+        z-index: 19;
+      }
+
+      /* *************************************    hide non-signin content    ************************************* */
+      .hideme {
+        display: none;
+      }
+      .welcome_head{
+        color:#4e4848;
+        font-family:'Times New Roman', Times, serif;
+      }
+    </style>
+
+    <title>hospito</title>
+  </head>
+  <body>
+    <!-- ======================================   HEADER    ====================================== -->
+    <header>
+      <nav class="border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-800">
+          <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+            <!-- LOGO -->
+              <a href="#" class="flex items-center">
+                  <img src="./content/hospital.svg" class="mr-3 h-6 sm:h-9" alt="Hospito Logo" />
+                  <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">hospito</span>
+              </a>
+              <div class="flex items-center lg:order-2">
+                <?php
+                  if (isset($_SESSION['user']) && ($_SESSION['user'] == 'patient' || $_SESSION['user'] == 'family')){
+                    $nameToDisplay = $_SESSION['username'];
+                  }
+                  else if (isset($_SESSION['user']) && $_SESSION['user'] == 'admin'){
+                    $nameToDisplay = $_SESSION['fullname'];
+                  }
+                  if (isset($_SESSION['user'])) {
+                    echo '<a href="./phpcode/logout.php" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log Out</a>';
+
+                    echo '<a href="./template/profile.html" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">'.$nameToDisplay.'</a>';
+                  } else {
+                    echo '<a href="./template/signup.html" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Sign Up</a>';
+
+                    echo '<a href="#" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 hideme"></a>';
+                  }
+                  ?>
+
+                  <!-- RESPONSIVE -->
+                  <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+                      <span class="sr-only">Open main menu</span>
+                      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                      <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                  </button>
+              </div>
+
+              <!-- ṃenu -->
+              <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+                  <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                    <?php 
+                      if (isset($_SESSION['fullname']) && $_SESSION['user'] == 'admin'){
+                        echo '<li>
+                          <a href="./template/addHospital.html" target="_blank" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Add New</a>
+                          </li>
+                          <li>
+                            <a href="./template/formCreate.html" target="_blank" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Create Health Form</a>
+                          </li>
+                          <li>
+                            <a href="./template/reportFees.html" target="_blank" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Prepare report & fees</a>
+                          </li>';
+                      }
+                    ?>
+                      <li>
+                          <a href="#browseHospital" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">browse hospitals</a>
+                      </li>
+                      <li>
+                        <?php 
+                        if (isset($_SESSION['user']) && ($_SESSION['user'] == 'patient')){
+                          echo '<a href="./template/Pform.html" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Check  up</a>';
+                        }
+                        ?>
+                      </li>
+                      
+                      <li>
+                          <a href="#contactus" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+    </header>
+
+    <!-- ======================================   ALERT BOX    ====================================== -->
+    <?php
+      if (isset($_GET['msg'])) {
+        $error = $_GET['msg'];
+        if (strlen($error) > 1) {
+          echo '<div class="alert msgs alert-warning alert-dismissible fade show noticeAlert" id = "noticeblock" role="alert">'.$error.'<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+          </div>';
+        }
+      }
+    ?>
+
+    <!-- ======================================   INTRO VIEW    ====================================== -->
+    <div class="mainpg">
+    <div class="flex justify-center  ">
+        <div class="flex flex-col items-center justify-center">
+        
+            <div class="flex flex-col  max-w-7xl justify-center items-center space-y-3 w-full ">
+                <div class="flex flex-col   md:items-start items-center justify-center  space-y-3 px-8 text-center ">
+                    <div class="text-3xl md:text-7xl font-bold welcome_head">
+                        Live Your Life More Charming</div>
+                </div>
+                <div
+                    class="flex flex-col lg:flex-row space-x-2 space-y-3 md:space-x-6   w-full items-center justify-center ">
+              
+                    <div class="lg:w-40 w-64 h-40  overflow-hidden rounded-xl ">
+                        <img src="https://source.unsplash.com/random/300x500/?icu" alt="" class="" />
+                    </div>
+                    <div class="flex flex-row lg:flex-col space-x-3 space-y-6 items-center justify-center">
+                        <div class="w-32 lg:w-40 h-32  overflow-hidden rounded-xl ">
+                            <img src="https://source.unsplash.com/random/300x500/?patient" alt="" class="" />
+                        </div>
+                        <div class="w-32 lg:w-40 h-48  overflow-hidden rounded-xl ">
+                            <img src="https://source.unsplash.com/random/300x500/?wheelchair" alt="" class="" />
+                        </div>
+                    </div>
+                    <div class="lg:w-60 w-64 h-96  overflow-hidden rounded-xl ">
+                        <img src="https://source.unsplash.com/random/300x500/?doctors" alt="" class="" />
+                    </div>
+                    <div class="flex flex-row lg:flex-col space-x-3 space-y-6 items-center justify-center ">
+                        <div class="w-32 lg:w-40 h-48  overflow-hidden rounded-xl ">
+                            <img src="https://source.unsplash.com/random/300x500/?hospital" alt="" class="" />
+                        </div>
+                        <div class="w-32 lg:w-40 h-32  overflow-hidden rounded-xl ">
+                            <img src="https://source.unsplash.com/random/300x500/?medicine" alt="" class="" />
+                        </div>
+                    </div>
+                    <div class="lg:w-40 w-64 h-40  overflow-hidden rounded-xl ">
+                        <img src="https://source.unsplash.com/random/300x500/?injection" alt="" class="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    </div>
+    
+    <!-- ======================================   HOSPITALS   ====================================== -->
+    <div class="contentHospital">
+      <?php 
+      if (isset($_SESSION['user']) || (isset($_SESSION['user']) !== 'family' || $_SESSION['user'] !== 'admin')){
+        echo '<div class="topp mb-4" id="browseHospital">
+          <h2 class="text-2xl">Hospitals</h2>
+          <div class="forms">
+          <form action="index.html" method="POST">
+            <button type="submit" value="govt" name="filterAs">Government</button>
+          </form>
+          <form action="index.html" method="POST">
+            <button type="submit" value="pvt" name="filterAs">Private</button>
+          </form>
+          <form action="index.html" method="POST">
+            <button type="submit" value="filterAll">Clear</button>
+          </form>
+        </div>
+        </div>';
+      }
+      ?>
+    <!-- --------------------------------------   LIST    ---------------------------------------- -->
+    <div class="listt mt-5">
+
+      <?php       
+      if ($resultCheck > 0) {
+        for ($i = 0; $i <= $resultCheck; $i++) {
+          if ($row = mysqli_fetch_assoc($result)) {
+            if ($row['hosptype'] == 'pvt') {
+              $typehosp = "Private";
+            } else if ($row['hosptype'] == 'govt') {
+              $typehosp = "Government";
+            }else {
+              $typehosp = "no idea";
+            }
+            $imageurls = explode("|", $row['fileLinks']);
+            $priceurl = $row['pricelist'];
+            $carouselID = "carouselExample".$i;
+            $hospcontact = explode("|", $row['hospNO']);
+
+            echo '
+            <div class="card m-3" style="width: 25rem;">
+              <div id="'.$carouselID.'" class="carousel slide">
+                  <div class="carousel-inner">';
+            for ($j = 0; $j < count($imageurls); $j++){
+              $extention = pathinfo($imageurls[$j], PATHINFO_EXTENSION);
+              if ($extention == 'gif' || $extention == 'png' || $extention == 'jpeg' || $extention == 'jpg'){
+                echo '<div class="carousel-item active">
+                <img src="./uploads/'.$imageurls[$j].'" alt="Error loading"></img>
+              </div>';
+              }else if ($extention == 'mov' || $extention == 'avi' || $extention == 'mp4'){
+                echo '<div class="carousel-item active">
+                <video controls=true src="./uploads/'.$imageurls[$j].'"></video>
+              </div>';
+              }
+            }
+            echo '</div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#'.$carouselID.'" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#'.$carouselID.'" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+              </div>';
+        
+             // <!-- INFO AREA OF CARD -->
+              echo '<div class="card-body cardy">
+        
+                <div class="btns d-flex flex-row justify-content-between m-2">';
+                 if (isset($_SESSION['user']) && $_SESSION['user'] == 'patient'){ 
+                  echo '<form action="./phpcode/save.php" method="get" class="m-1">
+                    <input type="text" name= "hospName" value="'.$row['hospName'].'" style="display:none;">
+                    <input type="text" name= "Hcode" value="'.$row['Hcode'].'" style="display:none;">
+                    <button class="btn m-1" name="patientSaved"><img class="image" src="./content/icons8-favorites-30.svg" alt="Save"></button>
+                  </form>';
+                 }
+                  echo '<a href="./pricing/'.$priceurl.'" class="btn btn-primary m-1" download="./pricing/'.$priceurl.'">Download price list</a>
+                </div>
+        
+                <h5 class="card-title">'.$row["hospName"].'</h5>
+        
+                <ul>
+                  <li><p class="card-text"><strong>Type : </strong>'.$typehosp.'</p></li>
+                  <li><p class="card-text"><strong>Stablished in : </strong>'.$row["stabYR"].'</p></li>
+                  <li><p class="card-text"><strong>Address : </strong>'.$row["hospaddress"].'</p></li>
+                  <li><p class="card-text"><strong>Email-ID : </strong>'.$row["hospemailID"].'</p></li>
+                  <li><p class="card-text"><strong>Contact 1 : </strong>'.$hospcontact[0].'</p></li>
+                  <li><p class="card-text"><strong>Contact 2 : </strong>'.$hospcontact[1].'</p></li>
+                </ul>';
+                if (isset($_SESSION['user']) && $_SESSION['user'] == 'admin'){
+                  echo '<form action="./phpcode/deleting.php" method="POST">
+                    <input style="display:none;" type="text" name="hospName" value = "'.$row["hospName"].'"> 
+                    <input style="display:none;" type="text" name="Hcode" value = "'.$row["Hcode"].'"> 
+                    <button type="submit" name = "delThis" class="btn btn-outline-warning m-1">Delete</button></form>';
+                }
+                echo '
+              </div>
+            </div>';
+          }
+        }
+        }
+      else{
+        echo '<p style = "color:rgb(12, 24, 190);border-bottom : 2px double crimson;margin-bottom:20px;">SORRY NO HOSPITALS FOUND</p>';
+      }
+      ?>
+
+    <!-- endddd  -->
+    </div>
+    </div>
+    <!-- ======================================   FOOTER    ====================================== -->
+    <footer class="p-4 md:p-8 lg:p-10 dark:bg-gray-800">
+        <!-- CONTACT & MAP -->
+        <div class="flex justify-center">
+          <div class="flex md:flex-row flex-col justify-center max-w-7xl">
+            <!-- CONTACT FORM -->
+              <div class= "bg-black" id="contactus">
+                  <div class="flex justify-center flex-col items-center">
+                      <div class="text-white m-6 text-xl z-200"> Contact Us </div>
+                      <div class="text-white m-6 z-200"> We are always here to help out whatever way we can :) <br>
+                      <strong>contact : </strong> +91 1234567890
+                      </div>
+                      <div class="text-white m-6 z-200">
+                        <form action="./phpcode/emailHandel.php" method="post">
+                          <div class="flex m-2">
+                              <ion-icon name="person-outline" class="m-2"></ion-icon> <input name = "name" placeholder="Name"
+                                  class="bg-gray-800 p-2 rounded-3xl">
+                          </div>
+                          <div class="flex m-2">
+                              <ion-icon name="mail-outline" class="m-2"></ion-icon> <input name = "email" placeholder="E-mail"
+                                  class="bg-gray-800 p-2 rounded-3xl">
+                          </div>
+                          <div class="flex m-2">
+                              <ion-icon name="call-outline" class="m-2"></ion-icon> <input name = "phone" placeholder="Phone"
+                                  class="bg-gray-800 p-2 rounded-3xl">
+                          </div>
+                          <div class="flex m-2">
+                              <ion-icon name="create-outline" class="m-2"></ion-icon> <input
+                                  name = "issue" placeholder="Type your message" class="bg-gray-800 p-2 rounded-3xl">
+                          </div>
+                          <div class="block m-2justify-center">
+                              <div class="bg-blue-700 p-2 rounded-3xl hover:bg-blue-800 cursor-pointer ">
+                                  <div class="flex justify-center"><button type="submit" name="helpline"> Send </button></div>
+                              </div>
+                          </div>
+                        </form>
+                      </div>
+                  </div>
+              </div>
+              <!-- GOOGLE MAP -->
+              <div class="w-3/4 lg:w-2/3 ">
+                  <div class="w-3/4 lg:w-1/2 overflow-contain h-min"> <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3847.9129709982376!2d73.92934481771073!3d15.326964033895702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfb6d4f1f6451d%3A0x5aa42df33ac41f6!2sPadre%20Conceicao%20College%20of%20Engineering!5e0!3m2!1sen!2sin!4v1676098123731!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> </div>
+              </div>
+          </div>
+        </div>
+        
+        <!-- ABOUT AND ENDING -->
+        <div class="mx-auto max-w-screen-xl text-center">
+            <a href="#" class="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white">
+                <img src="./content/hospital.svg" class="mr-3 h-6 sm:h-9" alt="hospito" />
+                hospito    
+            </a>
+            <p class="my-6 text-gray-500 dark:text-gray-400">Our team provides various hospitals that can help you in need.</p>
+            <ul class="flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">Premium</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6 ">Campaigns</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">Blog</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">Affiliate Program</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">FAQs</a>
+                </li>
+                <li>
+                    <a href="#contactus" class="mr-4 hover:underline md:mr-6">Contact</a>
+                </li>
+            </ul>
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2021-2022 <a href="#" class="hover:underline">Flowbite™</a>. All Rights Reserved.</span>
+        </div>
+    </footer>
+  </body>
+</html>

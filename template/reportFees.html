@@ -1,0 +1,151 @@
+<?php 
+session_start();
+include('../phpcode/database_con.php');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <title>health Form</title>
+    <style>
+        body{
+            background:#999;
+        }
+        h2{
+            margin:auto;
+            padding:5px;
+            width:fit-content;
+            color:navy;
+            display: flex;
+            flex-direction: column;
+        }
+        h2::after{
+            content: "";
+            border:none;
+            padding:3px;
+            background:linear-gradient(45deg,rgb(163, 15, 15),rgb(218, 24, 24),rgb(218, 24, 24),rgb(163, 15, 15));
+            border-radius: 10px;
+            width: 90%;
+            margin: auto;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            width:80%;
+            margin: auto;
+            margin-top:10px;
+            border-radius: 10px;
+            background:#333555da;
+            padding:2%;
+            box-sizing: border-box;
+            box-shadow: 2px 2px 20px 3px #555;
+        }
+        form button{
+            width:fit-content;
+            padding:2% 3% 2% 3%;
+            color:#ccc;
+            border:2px solid lightgreen;
+            border-radius: 10px;
+            background: transparent;
+            margin-top:5%;
+            transition: all 0.5s ease-in-out;
+        }
+        button:hover{
+            background:lightgreen;
+            color:#333;
+        }
+        form input{
+            background:#ddd;
+            border-radius: 10px;
+            padding:5px;
+            font-size:1.1em;
+            color:#222;
+            outline:none;
+            word-spacing: 2px;
+            border:none;
+            transition: all 0.3s ease-in-out;
+        }
+        form .labeled{
+            color:aquamarine;
+            margin-top:4%;
+            margin-bottom: 1%;
+        }
+        input:hover,input:active{
+            box-shadow: 2px 2px 10px 2px #62c9d6;
+        }
+        input:hover form .labeled{
+            color:rgb(142, 212, 11);
+        }
+        #Pcode{
+            color:rgb(184, 14, 14);
+        }
+        .PC{
+            color:rgb(240, 34, 34);
+        }
+        a{
+            border-radius:100%;
+            border:none;
+            margin-left:50px;
+            transition: all 0.5s ease-in-out;
+        }
+        a:hover{
+            filter:drop-shadow(1px 8px 4px #222);
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html"><img src="../content/home-page-svgrepo-com.svg" height="50px" width="50px" alt="HOME"></a>
+    <h2>Set patient reports and fees</h2>
+    <!-- ############################# DISPLAY ERROR #################### -->
+    <p style="font-size:1.5rem;color:rgb(182, 35, 35);text-align:center;border-radius:20px; background-color:rgba(255, 255, 0, 0.589);">
+        <?php
+        if (isset($_GET['msg'])) {
+        $error = $_GET['msg'];
+        if (strlen($error) > 1) {
+            echo $error;
+            }
+        }
+    ?>
+    </p>
+    <form action="./reportFees.html" method="post">
+        
+        <label for="Pcode" class="labeled">Patient Unique Code :</label><br>
+        <input type="text" name="Pcode" id="Pcode" placeholder="If you don't have then contact them.">
+<br><br>
+        <label for="fees" class="PC">Total Fees :</label><br>
+        <input type="text" name="fees" id="fees" placeholder="Total fees patient have to pay">
+<br><br>
+        <label for="Areport" class="PC">Report :</label><br>
+        <input type="text" name="Areport" id="Areport" placeholder="Patient report">
+<br><br><br>
+        <button type="submit" name="Preport">Submit</button>
+    </form>
+        <?php
+        if (isset($_POST['Preport'])){
+            $Hcode = $_SESSION['Hcode'];
+            $Pcode = $_POST['Pcode'];
+            $fees = $_POST['fees'];
+            $Areport = $_POST['Areport'];
+
+            $sql = "UPDATE patientinfo SET Areport = ?,fees = ? WHERE Pcode = ?";
+            $stmt = mysqli_stmt_init($conn);
+            if (!mysqli_stmt_prepare($stmt,$sql)){
+                $error = "failed to update data";
+                header("Location: /hospital/template/reportFees.html?msg=$error");
+                exit();
+            }
+            else{
+                mysqli_stmt_bind_param($stmt, "sss", $Areport,$fees,$Pcode);
+                mysqli_stmt_execute($stmt);
+                $success = "Updated succesfully!!";
+                header("Location: /hospital/index.html?msg=$success");
+                exit();
+            }
+        }
+        ?>
+</body>
+</html>

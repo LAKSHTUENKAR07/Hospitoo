@@ -1,0 +1,60 @@
+<?php 
+  session_start();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <title>PHP File Uploads</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">    
+    <style>
+      iframe{
+        width:100%;
+        max-width:90vw;
+        height: 90vh;
+        margin-top:10px      
+      }
+    </style>
+</head>
+<body>
+
+<h1>PHP File Uploads</h1>
+
+<p style="color:aquamarine;">files supported are 'gif', 'png', 'jpeg','jpg', 'mp4', 'avi', 'mov'<br><br><strong style="color:aquamarine">PLEASE DO NOT UPLOAD FILE LARGER THAN 10 MB.</strong></p>
+
+<form method="post" enctype="multipart/form-data" action="../phpcode/upload.php">
+
+    <!-- <input type="hidden" name="MAX_FILE_SIZE" value="1048576"> -->
+
+    <label for="image">Image file</label>
+    <input type="file" id="image" name="files[]" multiple>
+
+    <!-- <label for="video">Another file</label>
+    <input type="file" name="video" id="video"> -->
+
+    <button>Upload</button>
+
+</form>
+
+<?php 
+if (isset($_GET['file'])){
+  echo '<h3>viewing uploaded data</h3>';
+  $destination = '../uploads/'.$_GET["file"];
+  $destinationView = $_GET["file"];
+}
+?>
+
+<?php if (isset($_GET['file'])){echo '<em style="color:greenyellow">Last File Uploaded: </em> '.$destinationView;}
+  else if (isset($_GET['msg'])){
+    echo '<h3>ERROR UPLOADING</h3>';
+    echo '<p style="color:crimson;">'.$_GET["msg"].'</p>';
+  } 
+  ?>
+
+<iframe src="<?php echo $destination; ?>" frameborder="0"></iframe>
+
+</body>
+</html> 

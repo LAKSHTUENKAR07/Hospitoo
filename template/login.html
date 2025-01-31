@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/form.css">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <script src="../scripts/code.js"></script>
+    <title>Sign in to hospito</title>
+</head>
+
+<body id="bo">
+    <h2 style="color:red;letter-spacing: 3px;word-spacing: 5px;">SIGN IN</h2>
+    <div class="main">
+        <button  style="width:40px;height:40px;" title="giff" type="button"class="btn" onclick="giffy1()" style="background-image:url(https://media2.giphy.com/media/3j1cQ31u1AQKqG1tU6/200w.webp?cid=ecf05e47oj3rceuitmtk0uhravdd21s1ecwiia13df0xzd7l&rid=200w.webp&ct=g);"></button>
+
+        <button  style="width:40px;height:40px;" title="giff" type="button"class="btn" onclick="pic1()" style="background-image:url(../content/3d6.jpg);"></button>
+
+        <!-- #################### relation  ####################### -->
+        <div class="blocks" style = "margin-top:10px;" id="outbox">
+           <label for="relation">Relation:</label>
+           <br>
+           <select name="relation" id="relation" onchange="populate('relation')" required>
+           <option value="">--choose Relation--</option>
+           <option value="patient">Patient</option>
+           <option value="family">Family Member</option>
+           <option value="admin">Admin</option>
+           </select>
+       </div>
+
+       <!-- #################### patient  ####################### -->
+        <form action="../phpcode/signin.php" method="POST" style="height:90vh;display:none;"  id="patient">
+            <fieldset style="margin:auto;">
+                <legend><h2>Sign in to <strong id="gold">hospito</strong></h2></legend>
+                <br><br>
+                <!-- #################### relation  ####################### -->
+                <div class="blocks">
+                    <label for="relation">Relation:</label>
+                    <br>
+                    <select name="relation" id="relation" onchange="populate('relation')" required>
+                    <option value="">--choose Relation--</option>
+                    <option value="patient">Patient</option>
+                    <option value="family">Family Member</option>
+                    <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="email" name="EmailID" placeholder="Your Email ID" id="ema" required>
+                    <br>
+                    <input type="password" name="password" placeholder="Password" id="pass" required style="color:rgba(173, 16, 16, 0.788);">
+                    <button id="sub" type="submit" name="signin">Sign in</button>
+                    <div style="text-align: center; color:white;">
+                        Don't have an account? <a style="color:aquamarine" href="./signup.html">Sign Up</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <!-- #################### admin  ####################### -->
+        <form action="../phpcode/signin.php" method="POST" style="height:90vh;display:none;"  id="admin">
+            <fieldset style="margin:auto;">
+                <legend><h2>Sign in to <strong id="gold">hospito</strong></h2></legend>
+                <br><br>
+                <!-- #################### relation  ####################### -->
+                <div class="blocks">
+                    <label for="relation">Relation:</label>
+                    <br>
+                    <select name="relation" id="relation" onchange="populate('relation')" required>
+                    <option value="">--choose Relation--</option>
+                    <option value="patient">Patient</option>
+                    <option value="family">Family Member</option>
+                    <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="email" name="EmailID" placeholder="Your Email ID" id="email" required>
+                    <input type="text" name="Hcode" id="" placeholder="Unique Code">
+                    <input type="password" name="password" placeholder="Password" id="pass" required style="color:rgba(173, 16, 16, 0.788);">
+                    <button id="sub" type="submit" name="signin">Sign in in</button>
+                    <div style="text-align: center; color:white;">
+                        Don't have an account? <a style="color:aquamarine" href="./signup.html">Sign Up</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <!-- #################### Family  ####################### -->
+        <form action="../phpcode/signin.php" method="POST" style="height:90vh;display:none;"  id="family">
+            <fieldset style="margin:auto;">
+                <legend><h2>Sign in to <strong id="gold">hospito</strong></h2></legend>
+                <br><br>
+                <!-- #################### relation  ####################### -->
+                <div class="blocks">
+                    <label for="relation">Relation:</label>
+                    <br>
+                    <select name="relation" id="relation" onchange="populate('relation')" required>
+                    <option value="">--choose Relation--</option>
+                    <option value="patient">Patient</option>
+                    <option value="family">Family Member</option>
+                    <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="email" name="EmailID" placeholder="Patient Email ID" id="email" required>
+                    <br>
+                    <input type="text" name="Pcode" placeholder="Patient Unique Code" id="pass" required style="color:rgba(173, 16, 16, 0.788);">
+                    <button id="sub" type="submit" name="signin">Enter</button>
+                </div>
+            </fieldset>
+        </form>
+
+        <div style="text-align: center; color:white;">
+            Don't have an account? <a style="color:aquamarine" href="./signup.html">Sign Up</a>
+        </div>
+        
+        <p style="font-size:1.5rem;color:rgb(182, 35, 35);text-align:center;border-radius:20px; background-color:rgba(255, 255, 0, 0.589);">
+            <?php
+            if (isset($_GET['msg'])) {
+              $error = $_GET['msg'];
+              if (strlen($error) > 1) {
+                echo $error;
+              }
+            }
+          ?>
+        </p>
+</body>
+</html>

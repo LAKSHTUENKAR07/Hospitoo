@@ -1,0 +1,218 @@
+body{
+    background:linear-gradient(45deg,rgba(0, 0, 0, 0.600),rgba(0, 0, 0, 0.700),rgba(0, 0, 0, 0.800)),url(../content/3d6.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    backdrop-filter: blur(5px);
+    background-size: cover;
+    /* display:flex;
+    justify-content: space-around;
+    flex-wrap: wrap; */
+}
+
+.main{
+    width:75%;
+    margin:auto;
+}
+
+h1{
+    background: transparent;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e9510a, 0 0 40px #e9510a, 0 0 50px #e9510a, 0 0 60px #e9510a, 0 0 70px #e9510a;
+    text-align: center;
+    width:80%;
+    margin:auto;
+    margin-bottom:2%;
+}
+
+.btn{
+    width:40px;
+    height:40px;
+    border-radius:100%;
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border:5px double crimson;
+    box-shadow: 2px 5px 20px 1px crimson;
+}
+
+::selection{
+    color:red;
+    background:black;
+  }
+
+h2{
+    text-align: center;
+    color:#999;
+}
+/* form, */
+.part{
+    width:45%;
+    overflow:scroll;
+    padding:2%;
+    margin-top:2%;
+    margin-bottom:2%;
+    background-color:rgba(0, 0, 0, 0.521);
+    border-radius: 20px;
+    color:#ddd;
+    /* background:red; */
+}
+form{
+    width:100%;
+    margin:auto;
+    color:#ddd;
+}
+
+#gold{
+    background: rgba(0, 128, 0, 0.445);
+    padding:1%;
+    color:white;
+    border-radius:2px;
+}
+form:hover #gold{
+    border-radius:5px;
+    padding:2%;
+    background:rgba(0, 128, 0, 0.76); 
+    color:gold;
+}
+input{
+    text-align: center;
+    background:transparent;
+    /* color:aqua; */
+    color:greenyellow;
+    border:none;
+    outline: none;
+    border-bottom:2px groove gray;
+    width:90%;
+    border-radius: 10px;
+    margin-bottom:5%;
+    padding:2%;
+    font-size:1em;
+    transition: all 0.3s ease-in-out;
+}
+input:hover{
+    background:rgba(0, 0, 0, 0.178);
+    border-bottom:2px groove greenyellow;
+    background:linear-gradient(45deg,rgba(172, 255, 47, 0.500),transparent,transparent,rgba(172, 255, 47, 0.500));
+}
+
+button{
+    background:rgba(0, 0, 0, 0.534);
+    border-radius:20px;
+    color:rgba(255, 255, 255, 0.774);
+    margin:2%;
+    border:none;
+}
+
+#sub{
+    padding:3%;
+    background:rgba(0, 128, 0, 0.534);
+    margin-left:40%;
+    font-size:1em;
+}
+
+#sub:hover{
+    background:rgba(0, 128, 0, 0.795);
+    color:yellow;
+}
+
+fieldset{
+    background: rgba(0, 0, 0, 0.733);
+    box-shadow:1px 3px 10px 3px rgba(128, 128, 128, 0.788);
+    border:none;
+    border-radius:10px;
+    display:flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    color:#ddd;
+}
+
+.heado{
+    border-bottom:2px double red;
+    width:fit-content;
+    border-radius:10px;
+    margin:auto;
+    margin-bottom:20px;
+    padding:5px;
+}
+
+
+
+.blocks{
+    /* background:red; */
+    padding:1%;text-align: left;
+    margin-bottom:2%;
+}
+.blocks select{
+    width:90%;
+    margin-bottom:3%;
+    background:rgba(0, 0, 0, 0.521);
+    border-radius:5px;
+    font-size:1em;
+    padding:1%;
+    color:aqua;
+    outline:none;
+}
+
+.blocks label{
+    color:aquamarine;
+    font-size:1em;
+}
+
+.grp{
+    color:#ddd;    
+}
+
+#terms_box{
+    background:red;
+    border-radius:10px;
+    background:none;
+    color:white;
+    display:inline-flex;
+    justify-content: space-between;
+}
+
+.#uploadForm{
+    display: flex;
+    flex-direction: column;
+    width:fit-content;
+    padding:10px;
+    margin:5px;
+}
+
+::placeholder{
+    color:rgb(216, 211, 211);
+}
+
+input:hover::placeholder{
+    color:greenyellow;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius:0%;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:gray;
+  border-radius:10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background:white;
+}
+
+
+
+/* ###################################  Responsive  ################################## */
+
+@media (min-width:200px) and (max-width:500px){
+    form{
+        min-width:85%;
+    }
+}

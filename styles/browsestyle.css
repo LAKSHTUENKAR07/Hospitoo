@@ -1,0 +1,217 @@
+/* --------------------------------------   root    ---------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: radial-gradient(ellipse at top, #6157ff, transparent),
+    radial-gradient(ellipse at bottom, #ee49fd, transparent);
+}
+
+body {
+  background: radial-gradient(ellipse at top, #6157ff3f, transparent),
+    radial-gradient(ellipse at bottom, #ee49fd3f, transparent);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease-in-out;
+}
+
+
+/* ======================================   Header    ====================================== */
+header {
+  background: radial-gradient(circle at 50%, #0f059bc0, #80058bbe);
+  backdrop-filter: blur(5px);
+}
+
+
+/* ======================================   Main view (intro)    ====================================== */
+.mainpg {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+
+/* *************************************    Browse Hopital    ************************************* */
+h2 {
+  color: aquamarine;
+  /* background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.8),
+    rgba(220, 20, 60, 0.9)
+  ); */
+  background:rgba(0, 0, 0, 0.486);
+  text-align: center;
+  color: #ddd;
+  letter-spacing: 3px;
+  width: 50%;
+  margin: auto;
+  padding: 5px;
+  font-size: 3rem;
+  border-radius: 0px 0px 20px 20px;
+  /* border-bottom: 4px groove rgba(220, 20, 60, 0.5); */
+  box-shadow: 0px 2px 20px 1px rgba(0, 0, 0, 0.5);
+  margin-bottom:5px;
+  z-index: 10;
+}
+.forms{
+  background:transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width:100%;
+  margin-top:10px;
+}
+
+
+/* --------------------------------------   list of hospitals    ---------------------------------------- */
+.listt {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+  margin: 10px;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+/* --------------------------------------   each card    ---------------------------------------- */
+.card {
+  background: rgba(65, 62, 62, 0.4);
+  backdrop-filter: blur(5px);
+  transition: all 0.2s ease-in-out;
+}
+
+.card:active,
+.card:hover {
+  background: rgba(65, 62, 62, 0.7);
+  box-shadow: 0px 15px 20px 2px rgba(0, 0, 0, 0.8);
+}
+
+.cardy ul {
+  color: #ddd;
+}
+
+.card-title {
+  font-size: x-large;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #7f38e9,
+      0 0 40px #7f38e9, 0 0 50px #7f38e9, 0 0 60px #7f38e9, 0 0 70px #7f38e9;
+  }
+
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #a46afd, 0 0 40px #a46afd,
+      0 0 50px #a46afd, 0 0 60px #a46afd, 0 0 70px #a46afd, 0 0 80px #a46afd;
+  }
+}
+
+.image {
+  transition: all 0.2s ease-in-out;
+}
+
+.image:hover {
+  filter: drop-shadow(2px 2px 1px yellow);
+}
+
+.card strong {
+  color: aquamarine;
+  letter-spacing: 3px;
+}
+
+/* --------------------------------------   carousel    ---------------------------------------- */
+.carousel span {
+  background-color: black;
+  border-radius: 30%;
+  border:1px solid white;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  height: fit-content;
+  padding: 20px;
+  margin-top: 50%;
+}
+
+.carousel img,
+.carousel video {
+  width: 25rem;
+  height: 25rem;
+  border-radius: 10px;
+}
+.carousel-inner {
+  border-radius: 10px;
+}
+
+.carousel {
+  transition: all 0.2s ease-in-out;
+}
+
+.carousel:hover,
+.carousel:active {
+  border-radius: 10px;
+  transform: perspective(200px) rotateX(1deg) scale3d(1.1, 1.1, 1.1);
+  box-shadow: 0px 15px 20px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* ======================================   Fotter    ====================================== */
+footer {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+footer li {
+  color: #ddd;
+}
+
+/* *************************************    Handel    ************************************* */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  /* background: red; */
+  /* background: rgba(0, 0, 128, 0.356); */
+  background: transparent;
+  /* border-left:1px solid gray; */
+  border-radius: 0%;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(98 186 215);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(107, 186, 212);
+}
+
+/* *************************************    Responsive    ************************************* */
+@media (min-width: 100px) and (max-width: 700px) {
+  main {
+    flex-direction: column;
+    height: fit-content;
+  }
+  aside {
+    z-index: 5;
+    width: fit-content;
+    margin-top: 15%;
+    height: auto;
+    max-height: fit-content;
+    box-shadow: 1px 5px 20px 1px gray;
+    margin-bottom: -20%;
+  }
+  .carousel {
+    width: 100%;
+  }
+  .carousel img {
+    width: 100%;
+  }
+}

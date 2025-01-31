@@ -1,0 +1,50 @@
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/formmake.css">
+    <title>health Form</title>
+</head>
+<body>
+    <a href="../index.html"><img src="../content/home-page-svgrepo-com.svg" height="50px" width="50px" alt="HOME"></a>
+    <h2>Set patient reports and fees</h2>
+    <h2>Health Form</h2>
+    <p>Add question that you would like to ask to any patient of particular age group.</p>
+
+    <form action="../phpcode/tfill.php" method="POST">
+        <label for="qnum">How many questions would you ask?</label>
+        <input type="number" name="num_fields" id="num_fields" min="1" max="20" placeholder="Number of question to ask?">
+
+        <label for="category">Category :</label>
+        <select name="age">
+            <option value="child">Children (1-15)</option>
+            <option value="adult">Adult (16-64)</option>
+            <option value="senior">Children (64+)</option>
+        </select>
+
+        <label for="Hcode" class="PC">Your Unique Code :</label>
+        <input type="text" name="Hcode" id="Hcode" placeholder="Unique Code">
+
+        <button type="submit">SUBMIT</button>
+    </form>        
+
+        <!-- ############################# DISPLAY ERROR #################### -->
+        <p style="font-size:1.5rem;color:rgb(182, 35, 35);text-align:center;border-radius:20px; background-color:rgba(255, 255, 0, 0.589);">
+            <?php
+            if (isset($_GET['msg'])) {
+            $error = $_GET['msg'];
+            if (strlen($error) > 1) {
+                echo $error;
+            }
+            }
+        ?>
+        </p>
+
+</body>
+</html>

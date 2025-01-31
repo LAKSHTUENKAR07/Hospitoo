@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="./content/hospital-svgrepo-com.svg" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/form.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../scripts/code.js"></script>
+
+    <title>Signup to hospito</title>
+</head>
+
+<body id="bo">
+    <h2 style="color:red;letter-spacing: 3px;word-spacing: 5px;">SIGN UP</h2>
+    <div class="main">
+        <button  title="giff" type="button" style="height:40px;width:40px;background-size:cover;background-position: center;" class="btn" onclick="giffy1()" style="background-image:url(https://media2.giphy.com/media/3j1cQ31u1AQKqG1tU6/200w.webp?cid=ecf05e47oj3rceuitmtk0uhravdd21s1ecwiia13df0xzd7l&rid=200w.webp&ct=g);"></button>
+
+        <button  title="giff" type="button"class="btn" style="height:40px;width:40px;" onclick="pic1()" style="background-image:url(./gleam_weconnectall.jpeg);"></button>
+
+        <!-- #################### relation  ####################### -->
+        <div class="blocks" style = "margin-top:10px;" id="outbox">
+            <label for="relation">Relation:</label>
+            <br>
+            <select name="relation" id="relation" onchange="populate('relation')" required>
+                <option value="">--choose Relation--</option>
+                <option value="patient">Patient</option>
+                <option value="family">Family Member</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <!-- ########################   For patient  ############################ -->
+        <form action="/hospital/phpcode/signup.php" method="POST"  style="height:fit-content;display:none;"  id="patient">
+            <fieldset>
+                <legend><h2>Sign up to <strong id="gold">hospito</strong></h2></legend>
+                <br><br>
+
+                <!-- #################### relation  ####################### -->
+                <div class="blocks">
+                    <label for="relation">Relation:</label>
+                    <br>
+                    <select name="relation" id="relation" onchange="populate('relation')" required>
+                        <option value="">--choose Relation--</option>
+                        <option value="patient">Patient</option>
+                        <option value="family">Family Member</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div>
+                    <!-- #################### fullname  ####################### -->
+                    <input type="text" name="fullName" id="fullname" required placeholder="Name (as per birth certificate)">
+
+                    <!-- #################### username  ####################### -->
+                    <input type="text" name="username" id="username" required placeholder="Unique username">
+
+                    <!-- #################### Gender  ####################### -->
+                    <div class="grp gen" id="genderBox">
+                        <label for="gender">Gender : </label>
+                        <span>
+                            <input type="radio" name="gender" id="male" value="Male">
+                            <label for="male" required>Male</label>
+                        </span>
+            
+                        <span>
+                            <input type="radio" name="gender" id="female" value="Female">
+                            <label for="female" required>Female</label>
+                        </span>
+            
+                        <span>
+                            <input type="radio" name="gender" id="others" value="Others">
+                            <label for="others" required>Others</label>
+                        </span>
+                    </div>
+
+                    <!-- #################### number  ####################### -->
+                    <input type="tel" name="contactno" id="numb" placeholder = "Mobile Number" required>
+                    
+                    <!-- #################### email  ####################### -->
+
+                    <input type="email" name="EmailId" placeholder="Your email id" id="emailid" required>
+
+                    <!-- #################### Age  ####################### -->
+
+                    <input type="number" name="age" placeholder="Your age" id="age" required>
+
+                    <!-- #################### password  ####################### -->
+
+                    <input type="password" name="password" placeholder="Password" id="pass" required style="color:rgba(173, 16, 16, 0.788);">
+
+                    <input type="password" name="repassword" placeholder="Re-enter Password" id="repass" required style="color:rgba(173, 16, 16, 0.788);">
+
+                    <!-- #################### unique code  ####################### -->
+                    <input type="text" name="Pcode" placeholder="Generate Unique Code" id="Ucode" required style="color:rgb(192, 74, 6);">
+
+                    <!-- #################### terms/services  ####################### -->
+                    <div class="blocks" id="terms_box">
+                    <input type="checkbox" value="terms" name="terms" required>
+                    <!-- <br> -->
+                    <label for="terms" style="color:white;">I have read and agree to the <a id="terms_service" href="./termsAndConditions.html" style="color:yellow;">terms of service</a></label>
+                    </div>
+
+                    <!-- ############################# DISPLAY ERROR #################### -->
+                    <p style="font-size:1.5rem;color:rgb(182, 35, 35);text-align:center;border-radius:20px; background-color:rgba(255, 255, 0, 0.589);">
+                        <?php
+                        if (isset($_GET['msg'])) {
+                        $error = $_GET['msg'];
+                        if (strlen($error) > 1) {
+                            echo $error;
+                        }
+                        }
+                    ?>
+                    </p>
+
+                    <!-- #################### submit  ####################### -->
+                    <button id="sub" type="submit" name="signup">Sign Up</button>
+                    <div style="text-align: center; color:white;">
+                        have an account? <a style="color:aquamarine"  href="./login.html">Sign in</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+         <!-- ########################   For admin  ############################ -->
+        <form action="/hospital/phpcode/signup.php" method="POST"  style="height:fit-content;display:none;"  id="admin">
+            <fieldset>
+                <legend><h2>Sign up to <strong id="gold">hospito</strong></h2></legend>
+                <br><br>
+
+                <!-- #################### relation  ####################### -->
+                <div class="blocks">
+                    <label for="relation">Relation:</label>
+                    <br>
+                    <select name="relation" id="relation" onchange="populate('relation')" required>
+                        <option value="">--choose Relation--</option>
+                        <option value="patient">Patient</option>
+                        <option value="family">Family Member</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div>
+                    <!-- #################### fullname  ####################### -->
+                    <input type="text" name="fullName" id="fullname" required placeholder="Your Name">
+
+                    <!-- #################### number  ####################### -->
+                    <input type="tel" name="contactno" id="numb" placeholder = "contact Number" required>
+                    
+                    <!-- ################### email  ####################### -->
+                    <input type="email" name="EmailId" placeholder="Your email id" id="emailid" required>
+
+                    <!-- #################### password  ####################### -->
+                    <input type="password" name="password" placeholder="Password" id="pass" required style="color:rgba(173, 16, 16, 0.788);">
+
+                    <input type="password" name="repassword" placeholder="Re-enter Password" id="repass" required style="color:rgba(173, 16, 16, 0.788);">
+
+                    <!-- #################### unique code  ####################### -->
+                    <input type="text" name="Hcode" placeholder="Generate Unique Code" id="Ucode" required style="color:rgb(192, 74, 6);">
+
+                    <!-- #################### terms/services  ####################### -->
+                    <div class="blocks" id="terms_box">
+                    <input type="checkbox" value="terms" name="terms" required>
+                    <!-- <br> -->
+                    <label for="terms" style="color:white;">I have read and agree to the <a id="terms_service" href="./termsAndConditions.html" style="color:yellow;">terms of service</a></label>
+                    </div>
+
+                    <!-- #################### submit  ####################### -->
+                    <button id="sub" type="submit" name="signup">Sign Up</button>
+                    <div style="text-align: center; color:white;">
+                        have an account? <a style="color:aquamarine"  href="./login.html">Sign in</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <div style="text-align: center; color:white;">
+            have an account? <a style="color:aquamarine"  href="./login.html">Sign in</a>
+        </div>
+        
+        <!-- ############################# DISPLAY ERROR #################### -->
+        <p style="font-size:1.5rem;color:rgb(182, 35, 35);text-align:center;border-radius:20px; background-color:rgba(255, 255, 0, 0.589);">
+            <?php
+            if (isset($_GET['msg'])) {
+            $error = $_GET['msg'];
+            if (strlen($error) > 1) {
+                echo $error;
+            }
+            }
+        ?>
+        </p>
+
+        <!-- ########################   For family  ############################ -->
+        <div id="family" style="display:none;">
+           <p style="color:red;">NO NEED TO SIGN UP. PLEASE SIGN IN TO CONTINUE</p>
+           <a style="color:aquamarine; border-radius:10px;text-decoration: none;"  href="./login.html" id="sub">Sign in</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<?php 
+session_start();
+include('../phpcode/database_con.php');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <title>health Form</title>
+    <style>
+        body{
+            background:#999;
+        }
+        h2{
+            margin:auto;
+            padding:5px;
+            width:fit-content;
+            color:navy;
+            display: flex;
+            flex-direction: column;
+        }
+        h2::after{
+            content: "";
+            border:none;
+            padding:3px;
+            background:linear-gradient(45deg,rgb(163, 15, 15),rgb(218, 24, 24),rgb(218, 24, 24),rgb(163, 15, 15));
+            border-radius: 10px;
+            width: 90%;
+            margin: auto;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            width:80%;
+            margin: auto;
+            margin-top:10px;
+            border-radius: 10px;
+            background:#333555da;
+            padding:2%;
+            box-sizing: border-box;
+            box-shadow: 2px 2px 20px 3px #555;
+        }
+        form button{
+            width:fit-content;
+            padding:2% 3% 2% 3%;
+            color:#ccc;
+            border:2px solid lightgreen;
+            border-radius: 10px;
+            background: transparent;
+            margin-top:5%;
+            transition: all 0.5s ease-in-out;
+        }
+        button:hover{
+            background:lightgreen;
+            color:#333;
+        }
+        form input{
+            background:#ddd;
+            border-radius: 10px;
+            padding:5px;
+            font-size:1.1em;
+            color:#222;
+            outline:none;
+            word-spacing: 2px;
+            border:none;
+            transition: all 0.3s ease-in-out;
+        }
+        form .labeled{
+            color:aquamarine;
+            margin-top:4%;
+            margin-bottom: 1%;
+        }
+        input:hover,input:active{
+            box-shadow: 2px 2px 10px 2px #62c9d6;
+        }
+        input:hover form .labeled{
+            color:rgb(142, 212, 11);
+        }
+        #Pcode{
+            color:rgb(184, 14, 14);
+        }
+        .PC{
+            color:rgb(240, 34, 34);
+        }
+        a{
+            border-radius:100%;
+            border:none;
+            margin-left:50px;
+            transition: all 0.5s ease-in-out;
+        }
+        a:hover{
+            filter:drop-shadow(1px 8px 4px #222);
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html"><img src="../content/home-page-svgrepo-com.svg" height="50px" width="50px" alt="HOME"></a>
+    <h2>Set patient reports and fees</h2>
+    <h2>Health Form</h2>
+    <!-- ############################# DISPLAY ERROR #################### -->
+    <p style="font-size:1.5rem;color:rgb(182, 35, 35);text-align:center;border-radius:20px; background-color:rgba(255, 255, 0, 0.589);">
+        <?php
+        if (isset($_GET['msg'])) {
+        $error = $_GET['msg'];
+        if (strlen($error) > 1) {
+            echo $error;
+            }
+        }
+    ?>
+    </p>
+    <?php
+        echo '<form action="../phpcode/PformUpdate.php" method="post">';
+        $Hcode = $_SESSION['Hcode'];
+        $age = $_SESSION['age'];
+        if ((1 <= $age) || ($age <= 15)){
+            $age = "child";
+        }
+        else if ((16 <= $age) || ($age <= 64)){
+            $age = "adult";
+        }
+        else if ((65 <= $age) || ($age <= 150)){
+            $age = "senior";
+        }
+
+        $sql = "SELECT * FROM healthf WHERE Hcode=? AND age=?";
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt,$sql)){
+            $error = "failed to update data";
+            header("Location: /hospital/template/Pform.html?msg=$error");
+            exit();
+        }
+        else{
+            mysqli_stmt_bind_param($stmt, "ss", $Hcode,$age);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_store_result($stmt);
+            // global $resultCheck;
+            $resultCheck = mysqli_stmt_num_rows($stmt);
+            if ($resultCheck == 0){
+                $error = "No Form Available for registered hospital.";
+                header("Location: /hospital/index.html?msg=$error");
+                exit();
+            }
+            else{
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            $questions = '';
+            for ($i = 0; $i <= $resultCheck; $i++) {
+                if ($row = mysqli_fetch_assoc($result)) {
+                    $questions .= $row['question'].'|';
+                    echo '<label class="labeled" for = "question">'.$row["question"].'</label>';
+                    echo "<input type='text' name='answer$i' id='question' placeholder='Answer...'>";
+                }
+            }
+            echo "<input type='text' name='questions' value='$questions' style='display:none;'>";
+            echo "<input type='text' name='Hcode' value='$Hcode' style='display:none;'>";
+            echo "<input type='text' name='resultCheck' value='$resultCheck' style='display:none;'>";
+            echo '<br><br><br><label for="question">Anything else :</label>
+            <input type="text" name="others" id="question" placeholder="Explain your problems here...DO NOT MAKE IT TOO LONG">
+            <br><br><br>
+            <label for="Pcode" class="PC">Your Unique Code :</label>
+            <input type="text" name="Pcode" id="Pcode" placeholder="Unique Code">
+    
+            <button type="submit" name="reported">Submit</button>
+        </form>';
+            }
+        }
+        ?>
+</body>
+</html>

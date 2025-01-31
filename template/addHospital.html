@@ -1,0 +1,140 @@
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/form.css">
+    <script>
+        function giffy1() {
+            var x=document.getElementById("bo");
+            x.style.backgroundImage="linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://media2.giphy.com/media/3j1cQ31u1AQKqG1tU6/200w.webp?cid=ecf05e47oj3rceuitmtk0uhravdd21s1ecwiia13df0xzd7l&rid=200w.webp&ct=g')"; 
+        }
+
+        function pic1() {
+            var x=document.getElementById("bo");
+            x.style.backgroundImage="linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url(../content/3d6.jpg)"; 
+        }
+    </script>
+    <title>Add hospital to hospito</title>
+</head>
+
+<body id="bo">
+    
+    <h1>Add All Details Correctly</h1>
+    <br>
+    <p style="font-size:1.5rem;color:rgb(193, 196, 19);text-align:center;border-radius:20px; width:100%;">
+        <?php
+        if (isset($_GET['msg'])) {
+        $error = $_GET['msg'];
+        if (strlen($error) > 3) {
+            echo $error;
+            }
+        }
+        ?>
+    </p>
+
+    <!-- ###############################    File Uploading  ################################## -->
+    <?php 
+    if(isset($_GET['status']) == "success"){
+        echo '<form action="/hospital/phpcode/upload.php" id="uploadForm" method="POST"  enctype="multipart/form-data" style="height:fit-content;">';
+        echo '<div class="part">
+            <p style="color:aquamarine;">files supported are "gif", "png", "jpeg","jpg", "mp4", "avi", "mov"<br><br><strong style="color:aquamarine">PLEASE DO NOT UPLOAD FILE LARGER THAN 10 MB.</strong></p>
+
+            <strong style="color:aquamarine">DO NOT FILL THE FORM AGAIN!!!</strong><br><br>
+            <label for="image" id="upload" style="color:red;">drag and drop or select multiple files(MAX 4) : </label><br><br>
+            <input type="file" id="image" name="files[]" multiple><br><br><br>
+            <button type="submit" id="sub" name="uploaded">Upload</button>
+            </div></form>';
+    }
+    else if (isset($_SESSION['filedone'])){
+        echo '<form action="/hospital/phpcode/pricefile.php" id="" method="POST"  enctype="multipart/form-data" style="height:fit-content;">';
+        echo '<div class="part">
+            <p style="color:aquamarine;">files supported is "PDF"<br><br><strong style="color:aquamarine">PLEASE DO NOT UPLOAD FILE LARGER THAN 1 MB.</strong></p><br><strong style="color:aquamarine">DO NOT FILL THE FORM AGAIN!!!</strong><br><br>';
+        echo '<label for="image" id="upload" style="color:red;">drag and drop or select multiple files(MAX 1) : </label><br><br>
+            <input type="file" id="image" name="pricefile"><br><br><br>
+            <button type="submit" id="sub" name="pricefileupload">Upload</button>
+            </div></form>';
+        }
+
+    if (isset($_GET['file'])){
+        echo '<h3>viewing uploaded data</h3>';
+        $destination = '../uploads/'.$_GET["file"];
+        $destinationView = $_GET["file"];
+        }
+    if (isset($_GET['file'])){echo '<em style="color:greenyellow">Last File Uploaded: </em> <a style="color:green;" href="'.$destination.'" target="_blank" >'.$destinationView.'</a>';}
+        
+    else{
+        echo '<form action="/hospital/phpcode/add.php" method="POST" style="height:fit-content;">
+
+            <button  title="giff" type="button" style="height:40px;width:40px;background-size:cover;background-position: center;" class="btn" onclick="giffy1()" style="background-image:url(https://media2.giphy.com/media/3j1cQ31u1AQKqG1tU6/200w.webp?cid=ecf05e47oj3rceuitmtk0uhravdd21s1ecwiia13df0xzd7l&rid=200w.webp&ct=g);"></button>
+
+            <button  title="giff" type="button"class="btn" style="height:40px;width:40px;" onclick="pic1()" style="background-image:url(../content/3d6.jpg);"></button>
+
+            <fieldset>
+                <legend><h2>Add Hospital to <strong id="gold">hospito</strong></h2></legend>
+                <br><br>
+                <!-- ###########################    Hospital Details    ################################### -->
+                <div class="part">
+                    <h2 class="heado">Add Hospital Details</h2>
+                    <div id="other-part">
+                        <!-- #################### Hospital Name  ####################### -->
+                        <input type="text" name="hospitalName" val id="Fname" required placeholder="Hospital Name">
+
+                        <!-- #################### Stablishment year  ####################### -->
+                        <input type="text" name="stablishyr" id="Fname" required placeholder="Stablishment Year">
+
+                        <div class="block">
+                            <!-- ####################  State  ####################### -->
+                            <input type="text" name="state" id="Fname" required placeholder="State">
+
+                            <!-- #################### City  ####################### -->
+                            <input type="text" name="city" id="Fname" required placeholder="City">
+                        </div>
+
+                        <!-- #################### Address  ####################### -->
+                        <input type="text" name="address" id="Fname" required placeholder="address">
+
+                        <!-- #################### hospital Email  ####################### -->
+                        <input type="email" name="hospmail" id="Fname" required placeholder="Hospital Email ID">
+
+                        <!-- #################### hospital type  ####################### -->
+                        <div class="blocks">
+                            <label for="hosptype">Type:</label>
+                            <br>
+                            <select name="hosptype" id="hosptype" required>
+                            <option value="pvt">Private</option>
+                            <option value="govt">Government</option>
+                            </select>
+                        </div>
+
+                        <!-- #################### contactNo:1 Of hospital  ####################### -->
+                        <input type="tel" name="hospcontact1" id="Fname" required placeholder="contact no.">
+
+                        <!-- #################### contactNo:2 Of hospital  ####################### -->
+                        <input type="tel" name="hospcontact2" id="Fname" required placeholder="alternate no.">
+
+                        <!-- #################### password Of hospital  ####################### -->
+                        <input type="password" name="hospPASS" id="Fname" required placeholder="Your Password">
+                    </div>
+                </div>
+
+                    <div class="blocks" id="terms_box">
+                        <input type="checkbox" value="terms" name="terms" required>
+                        <label for="terms" style="color:white;">I have read and agree to the <a id="terms_service" href="./termsAndConditions.html" style="color:yellow;">terms of service</a></label>
+                    </div>
+                    <button type="submit" id="sub" name="hospitalDetails">Submit</button>
+                </div>
+            </fieldset>
+        </form>';
+    }
+?>
+
+
+        
+</body>
+</html>

@@ -1,0 +1,341 @@
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../content/hospital.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="../imgs/restaurant-svgrepo-com.svg" type="image/x-icon">
+
+    <link rel="stylesheet" href="../styles/style_2.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <title>User Profile</title>
+    <style>
+        body {
+            background: rgb(31 41 55);
+            padding: 5%;
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+
+        img {
+            margin: auto;
+        }
+
+        form {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #ddd;
+            margin-bottom: 5%;
+        }
+
+
+        input,
+        textarea {
+            outline: none;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 400;
+            position: relative;
+            width: 90%;
+            margin: auto;
+            margin: 1%;
+            padding: 2%;
+            border-radius: 10px;
+            color: aquamarine;
+            background: rgba(128, 128, 128, 0.753);
+            letter-spacing: 2px;
+            border: none;
+        }
+
+        input:active,
+        input:hover,
+        textarea:hover {
+            background-color: rgba(0, 0, 0, 0.300);
+        }
+
+        .nameofusr {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            align-items: center;
+        }
+
+        .nameofusr input {
+            width: 40%;
+            min-width: 250px;
+        }
+
+
+        .typeofres {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 5%;
+        }
+
+        .answer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .answer label {
+            width: 100%;
+            word-wrap: normal;
+            padding: 1%;
+            margin: 2%;
+        }
+
+        span {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            min-width: 25%;
+        }
+
+        button {
+            background: rgba(220, 20, 60, 0.808);
+            width: 50%;
+            margin: auto;
+            padding: 1%;
+            color: #ddd;
+            margin-top: 5%;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            box-sizing: border-box;
+            letter-spacing: 2px;
+            /* border: transparent 5px groove; */
+            transition: all 0.5s ease-out;
+            padding: 2%;
+        }
+
+        strong {
+            color: yellow;
+        }
+
+        .accept {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            margin-top: 5%;
+        }
+
+        .accept label {
+            width: 100%;
+            letter-spacing: 2px;
+        }
+
+        a {
+            color: aqua;
+        }
+
+        ::placeholder {
+            color: #ddd;
+        }
+
+        button:hover {
+            background: rgba(20, 220, 137, 0.200);
+            letter-spacing: 3px;
+            /* border: rgba(220, 20, 60, 0.808) 5px groove; */
+        }
+
+        #passwd {
+            color: red;
+        }
+
+        .errorshow {
+            color: red;
+            margin-top: 1%;
+            margin-bottom: 3%;
+            text-align: center;
+            padding: 1%;
+            word-spacing: 3px;
+        }
+
+        pre {
+            color: red;
+            text-align: center;
+            width: auto;
+            padding: 1%;
+        }
+
+        .register{
+            color:greenyellow;
+            text-align: center;
+            margin:auto;
+            width:fit-content;
+            margin-bottom:3%;
+        }
+
+        .menu{
+            margin-bottom: 20px;
+        }
+        .close{
+            width:fit-content;
+            padding:1%;
+            background-color: transparent;
+            margin-left:10px;
+            font-size:100%;
+            color:red;
+        }
+        .alert{
+            height: fit-content;
+            padding-top:0%;
+            padding:1%;
+            text-align: center;
+        }
+
+        img{
+            transition: all 0.3s ease-out;
+        }
+        img:hover{
+            filter:hue-rotate(45deg);
+        }
+
+        label{
+            color:#aaa;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="menu">
+        <a href="../index.html"><img class="h-8 w-8 rounded-full" height=60px width=60px src="../content/home-page-svgrepo-com.svg" alt="user profile" /></a>
+    <img class="h-8 w-8 rounded-full profile" height=100px width=100px src="../content/user-profile-person-svgrepo-com.svg" alt="user profile" />
+    </div>
+
+      <!-- receiving errors from backend -->
+  <?php
+  if (isset($_GET['msg'])) {
+    $error = $_GET['msg'];
+    if (strlen($error) > 1) {
+      echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">' . $error . '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>';
+    }
+  }
+
+  if (isset($_SESSION['user']) && ($_SESSION['user'] == 'patient' || $_SESSION['user'] == 'family')){
+    echo '<div class="register"><strong>Reservations : </strong>';
+    if (isset($_SESSION['savedhospitals'])) {
+            echo $_SESSION['savedhospitals'];
+        } else {
+            echo "no reservations found";
+        } 
+    echo '</div>
+    <label>Unique Code :</label>
+    <input type="text" name="Pcode" class="tempo" placeholder="P-CODE" value="'.$_SESSION["Pcode"].'" disabled>
+
+    <br><br>
+    <label>Name :</label><br>
+    <input type="text" name="fullname" class="tempo" placeholder="Full Name" value="'.$_SESSION["fullname"].'" disabled>
+
+    <br><br>
+    <label>User Name :</label><br>
+    <input type="text" name="username" id="usrname" class="tempo" value="'.$_SESSION["username"].'" placeholder="Username" disabled>
+
+    <br><br>
+    <label>Gender :</label><br>
+    <input type="text" name="gender" class="tempo" placeholder="GENDER" value="'.$_SESSION["gender"].'" disabled>
+
+    <br><br>
+    <label>Contact :</label><br>
+    <input type="tel" name="contactno" id="contact" value="'.$_SESSION["contactno"].'" placeholder="contact no. with country code" disabled>
+
+    <br><br>
+    <label>Email ID :</label><br>
+    <input type="email" name="EmailId" value="'.$_SESSION["emailID"].'" placeholder="Eamil Id" disabled>
+
+    <br><br>
+    <label>Age :</label><br>
+    <input type="number" name="age" value="'.$_SESSION["age"].'" placeholder="Age" disabled>
+
+    <br><br>
+    <label>Fees [in rupees] :</label><br>
+    <input type="text" name="fees" class="tempo" placeholder="Will be updated by hospital soon" value="'.$_SESSION["fees"].'" disabled>
+
+    <br><br>
+    <label>Reports :</label><br>
+    <input name="Areport" class="tempo" placeholder="Will be updated by hospital soon" value="'.$_SESSION["Areport"].'" disabled>
+
+    <button type="submit" class="p-2 m-2" id="Pdelbtn" onclick="Adelete(this.id)" style="display:block;" data-toggle="modal" data-target="#PdelForm">DELETE ACCOUNT</button>
+
+    <div class="modal fade" role="dialog" id="PdelForm" style="display:none;background:rgba(12, 12, 70, 0.600);">
+    <form action="../phpcode/deleting.php" method="post">
+        <input type="text" name="fullname" placeholder="Name" required>
+        <input type="email" name="emailID" placeholder = "Email ID" required>
+        <input type="text" name="Pcode" placeholder = "Unique Code" required>
+        <input type="password" name="pwd" placeholder="Password" required>
+        <button type="submit" name="Pdelete" class="btn-outline-warning">DELETE</button>
+    </form>
+    <a href="./profile.html"><button style="width:fit-content;">CANCEL</button></a>
+    </div>';
+  }
+  else if (isset($_SESSION['user']) && ($_SESSION['user'] == 'admin')){
+    echo '<div class="register"><strong>Unique Code :</strong>';
+        if (isset($_SESSION['Hcode'])) {
+            echo $_SESSION['Hcode'];
+        } else {
+            echo "no Unique code found";
+        }
+    echo '</div>
+
+    <label>Name :</label><br>
+    <input type="text" name="fullname" class="tempo" placeholder="Full Name" value="'.$_SESSION["fullname"].'" disabled>
+<br><br>
+    <label>Email ID :</label><br>
+    <input type="email" name="EmailId" value="'.$_SESSION["emailID"].'" placeholder="Eamil Id" disabled><br>
+<br><br>
+    <label>Contact :</label><br>
+    <input type="tel" name="contactno" id="contact" value="'.$_SESSION["contactno"].'" placeholder="contact no. with country code" disabled>
+
+    <button type="submit" class="p-2 m-2" id="delbtn" onclick="Adelete()" style="display:block;" data-toggle="modal" data-target="#AdelForm">DELETE ACCOUNT</button>
+
+    <script>
+        //delete ADMIN account
+        function Adelete(who) {
+            if (who == "Pdelbtn"){
+                var formfill = document.getElementById("PdelForm");
+            }else{
+                var formfill = document.getElementById("AdelForm");
+            }
+        var delbtn = document.getElementById("delbtn");
+        formfill.style.display = "block";
+        delbtn.style.display = "None";
+        }
+    </script>
+
+    <form action="../phpcode/deleting.php" method="post" id="AdelForm" style="display:none;background:rgba(12, 12, 70, 0.600);" class="modal fade" role="dialog">
+        <input type="text" name="hospName" placeholder="Hospital Name" required>
+        <input type="email" name="hospemailID" placeholder = "Hospital Email ID" required>
+        <input type="text" name="Hcode" placeholder = "Unique Code" required>
+        <input type="password" name="hospPASS" placeholder="Password" required>
+        <button type="submit" name="Adelete" class="btn-outline-warning">DELETE</button>
+    </form>';
+  }
+  else {
+    echo '<p>SOMETHING WENT WRONG!</p>';
+  }
+  ?>
+</body>
+</html>
